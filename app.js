@@ -826,6 +826,11 @@ Provide a highly tactical, localized recommendation (maximum 3 sentences) in the
     if (response.ok) {
       const result = await response.json();
       if (result.text) return result.text;
+    } else {
+      const errJson = await response.json().catch(() => ({}));
+      const errMsg = errJson.error || `HTTP ${response.status}`;
+      console.warn('Vercel serverless proxy returned status error:', errMsg);
+      return `⚠️ **Backend Proxy Error (${response.status})**: ${errMsg}. *Falling back to offline rules engine...*`;
     }
   } catch (err) {
     console.warn('Vercel serverless proxy endpoint not found or offline. Trying client key:', err);
