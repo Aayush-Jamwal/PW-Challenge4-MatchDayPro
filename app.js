@@ -228,6 +228,10 @@ function hydrateState() {
 
 /**
  * Updates UI views to match active role tabs, modifying aria properties.
+ * When the accessibility skip navigation link (data-testid="skip-link") is activated,
+ * focus programmatically shifts to '#main-content' (which has tabindex="-1" configured),
+ * bypassing general menu/header items.
+ *
  * @param {'staff' | 'spectator'} role - Target dashboard view to swap
  * @returns {void}
  */

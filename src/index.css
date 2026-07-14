@@ -54,3 +54,33 @@
 *:focus {
   outline: none;
 }
+
+/* Accessibility skip navigation helpers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.focus\:not-sr-only:focus {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  padding: 12px 24px;
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #0056b3;
+  border-radius: 4px;
+  width: auto;
+  height: auto;
+  clip: auto;
+  overflow: visible;
+}
+
