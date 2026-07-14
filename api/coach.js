@@ -47,9 +47,26 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
+      let errorText = await response.text();
+      let displayMsg = errorText;
+      try {
+        const errorJson = JSON.parse(errorText);
+        let msg = errorJson.error?.message || errorText;
+        if (response.status === 404) {
+          const listResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${apiKey}`);
+          if (listResponse.ok) {
+            const listData = await listResponse.json();
+            const models = listData.models || [];
+            const names = models.map(m => m.name.replace('models/', '')).join(', ');
+            msg += `. Available models: [${names}]`;
+          }
+        }
+        displayMsg = msg;
+      } catch {
+        // Safe fallback
+      }
       return res.status(response.status).json({
-        error: `Gemini API returned error: ${errorText}`
+        error: `Gemini API returned error: ${displayMsg}`
       });
     }
 
