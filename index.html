@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en" class="h-full bg-black">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary SEO Metadata -->
+    <title>MatchDay Pro - FIFA World Cup 2026 Stadium Operations & Fan Navigation</title>
+    <meta name="description" content="MatchDay Pro is a high-performance operations control dashboard and live spectator guide for FIFA World Cup 2026 stadium management." />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body class="bg-black text-white font-sans antialiased h-full">
+    
+    <!-- Skip to main content anchor for WCAG 2.1 AA accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only bg-pitch-green text-black px-4 py-2 rounded-md font-bold absolute z-[100] left-4 top-4 border border-black focus:outline-none">
+      Skip to main content
+    </a>
+
+    <!-- TIMED LOADING SEQUENCE GATEWAY -->
+    <div id="boot-overlay" class="fixed inset-0 z-[9999] bg-pitch-black flex flex-col items-center justify-center p-6 transition-all duration-500" aria-live="polite">
+      <div class="text-center space-y-4">
+        <!-- Spinner SVG -->
+        <div class="relative w-16 h-16 mx-auto mb-2" data-testid="loading-spinner">
+          <svg class="animate-spin w-full h-full text-pitch-green" fill="none" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+        <h1 class="text-white font-mono text-xs uppercase tracking-[0.2em]">MatchDay Pro System Boot</h1>
+        <p class="text-[10px] text-snow-mute">Synchronizing security scanners & loading telemetry streams...</p>
+      </div>
+    </div>
+
+    <!-- FOCUS-LOCKED GATEWAY SELECTOR MODAL -->
+    <div id="role-selection-modal" class="fixed inset-0 z-[9998] bg-pitch-black flex items-center justify-center p-6 hidden" role="dialog" aria-modal="true" aria-labelledby="gateway-title">
+      <div class="bg-pitch-panel border border-pitch-border/80 rounded-3xl p-8 max-w-lg w-full shadow-glow-green/10 text-center relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-pitch-green/5 blur-3xl rounded-full"></div>
+        
+        <div class="w-14 h-14 rounded-2xl bg-pitch-green flex items-center justify-center text-black text-2xl font-black mx-auto mb-5 shadow-glow-green/25 select-none">
+          ⚽
+        </div>
+
+        <h2 id="gateway-title" class="text-white font-extrabold text-xl tracking-tight uppercase">
+          ESTADIO AZTECA GATEWAY SELECTOR
+        </h2>
+        <p class="text-xs text-snow-mute mt-2 max-w-sm mx-auto leading-relaxed">
+          Select your operational role below to sync your profile with the MatchDay telemetry systems.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+          <button
+            id="btn-role-staff"
+            data-testid="role-staff"
+            aria-label="Mount Operational Command Staff Dashboard"
+            class="flex flex-col items-center justify-center p-5 rounded-2xl border border-pitch-border bg-pitch-card hover:border-pitch-green/50 hover:bg-pitch-greenDeep/10 text-white transition-all text-center gap-3"
+          >
+            <span class="text-2xl" aria-hidden="true">🏢</span>
+            <span class="font-extrabold text-sm uppercase tracking-wide">Command Staff</span>
+            <span class="text-[10px] text-snow-mute leading-normal">Access simulation alerts & control gate switches</span>
+          </button>
+          
+          <button
+            id="btn-role-spectator"
+            data-testid="role-spectator"
+            aria-label="Mount Match Tournament Spectator Viewer Dashboard"
+            class="flex flex-col items-center justify-center p-5 rounded-2xl border border-pitch-border bg-pitch-card hover:border-pitch-green/50 hover:bg-pitch-greenDeep/10 text-white transition-all text-center gap-3"
+          >
+            <span class="text-2xl" aria-hidden="true">🎟️</span>
+            <span class="font-extrabold text-sm uppercase tracking-wide">Tournament Viewer</span>
+            <span class="text-[10px] text-snow-mute leading-normal">Inspect crowd navigation indexes & safety feeds</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div id="main-content" class="min-h-screen flex flex-col hidden">
+      
+      <!-- DYNAMIC HEADER -->
+      <header class="border-b border-pitch-border bg-pitch-dark/95 backdrop-blur sticky top-0 z-50 px-4 lg:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-pitch-green flex items-center justify-center text-black font-black text-xl shadow-glow-green/30 select-none">
+            ⚽
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-white font-extrabold tracking-tight text-lg leading-none">MATCHDAY PRO</span>
+              <span class="bg-pitch-green/10 text-pitch-green border border-pitch-green/20 text-[10px] px-1.5 py-0.5 rounded font-mono font-bold">STADIUM PROTOCOL</span>
+            </div>
+            <p class="text-[10px] text-snow-mute font-medium tracking-wider uppercase mt-1">FIFA World Cup 2026™ Portal</p>
+          </div>
+        </div>
+
+        <!-- Sync Persona Navigation (WCAG Role Tablist) -->
+        <div class="flex bg-black p-1 rounded-xl border border-pitch-border/80" role="tablist" aria-label="User Persona Selector">
+          <button
+            id="tab-staff"
+            role="tab"
+            aria-selected="true"
+            aria-controls="staff-panel"
+            aria-label="Switch view to Command Staff Dashboard"
+            class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 bg-pitch-green text-black"
+          >
+            <span aria-hidden="true">🏢</span> Command Staff
+          </button>
+          <button
+            id="tab-spectator"
+            role="tab"
+            aria-selected="false"
+            aria-controls="spectator-panel"
+            aria-label="Switch view to Tournament Spectator Dashboard"
+            class="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 text-snow-mute hover:text-white"
+          >
+            <span aria-hidden="true">🎟️</span> Tournament Viewer
+          </button>
+        </div>
+
+        <div class="flex items-center gap-4 text-xs">
+          <button
+            id="btn-exit-portal"
+            data-testid="reset-button-header"
+            aria-label="Clear session storage and exit dashboard"
+            class="bg-warning-red/10 border border-warning-red/30 hover:border-warning-red hover:bg-warning-red/20 text-warning-red text-[11px] px-2.5 py-1.5 rounded-lg transition-all"
+          >
+            Exit Portal
+          </button>
+
+          <div class="flex flex-col items-end">
+            <span class="text-white font-mono text-[11px] flex items-center gap-1">
+              <span class="text-pitch-green" aria-hidden="true">🕒</span>
+              <span id="utc-clock-readout">--:--:--</span>
+            </span>
+            <span class="text-[10px] text-snow-mute uppercase tracking-widest mt-0.5">ESTADIO AZTECA CONTROL</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- MAIN TELEMETRY WORKSPACE -->
+      <main class="flex-1 p-4 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
+        
+        <!-- TELEMETRY COUNTERS ROW -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Total Attendance Card -->
+          <div class="glass-panel p-5 rounded-2xl border border-pitch-border/80 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-pitch-green/10 text-pitch-green flex items-center justify-center text-xl" aria-hidden="true">
+              👥
+            </div>
+            <div>
+              <p class="text-[10px] text-snow-mute uppercase tracking-wider font-bold">Total Spectator Attendance</p>
+              <h3 id="stat-attendance" class="text-xl font-extrabold text-white mt-1" aria-live="polite">64,200</h3>
+              <p class="text-[9px] text-snow-dark mt-0.5 flex items-center gap-1">
+                <span>🔄</span> Live Gate Fluctuating Telemetry
+              </p>
+            </div>
+          </div>
+
+          <!-- Active App Users Card -->
+          <div class="glass-panel p-5 rounded-2xl border border-pitch-border/80 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-pitch-green/10 text-pitch-green flex items-center justify-center text-xl" aria-hidden="true">
+              📱
+            </div>
+            <div>
+              <p class="text-[10px] text-snow-mute uppercase tracking-wider font-bold">Active Mobile App Users</p>
+              <h3 id="stat-app-users" class="text-xl font-extrabold text-white mt-1" aria-live="polite">21,400</h3>
+              <p class="text-[9px] text-snow-dark mt-0.5">33.3% Total Attendance Engagement</p>
+            </div>
+          </div>
+
+          <!-- Overall Congestion Index Card -->
+          <div id="card-overall-congestion" class="glass-panel p-5 rounded-2xl border border-pitch-border/80 flex items-center gap-4 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-pitch-green/10 text-pitch-green flex items-center justify-center text-xl" id="icon-overall-congestion" aria-hidden="true">
+              📊
+            </div>
+            <div>
+              <p class="text-[10px] text-snow-mute uppercase tracking-wider font-bold">Overall Congestion Index</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <h3 id="stat-congestion" class="text-xl font-extrabold text-white" aria-live="polite">--%</h3>
+                <span id="badge-congestion-level" class="text-[9px] px-1.5 py-0.5 rounded font-black uppercase font-mono bg-pitch-green/10 text-pitch-green border border-pitch-green/20">
+                  Normal
+                </span>
+              </div>
+              <p class="text-[9px] text-snow-dark mt-0.5">Aggregated Stand Telemetry</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TWO VIEW-PANELS (Staff vs Spectator) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- LEFT/MIDDLE COLUMN (dashboard panel space) -->
+          <div class="lg:col-span-2 space-y-6">
+            
+            <!-- VIEW A: COMMAND STAFF PANEL -->
+            <div id="staff-panel" role="tabpanel" aria-labelledby="tab-staff" class="space-y-6">
+              
+              <!-- SVG Map & Details Card -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- SVG map rendering -->
+                <div class="md:col-span-2 flex flex-col items-center">
+                  <div class="relative w-full aspect-[3/2] bg-pitch-dark/80 rounded-2xl border border-pitch-border/80 overflow-hidden shadow-glow-green/5 p-4 flex flex-col justify-between">
+                    
+                    <div class="flex justify-between items-center z-10">
+                      <div>
+                        <h3 class="text-white font-semibold tracking-wide text-xs md:text-sm flex items-center gap-2">
+                          <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pitch-green opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-pitch-green"></span>
+                          </span>
+                          LIVE STADIUM CROWD MAP
+                        </h3>
+                        <p class="text-snow-mute text-[10px]">Click zones or use keyboard navigation to inspect stands</p>
+                      </div>
+                      
+                      <div class="flex gap-2 text-[9px] bg-black/40 px-2 py-1 rounded-lg border border-pitch-border/50">
+                        <div class="flex items-center gap-1">
+                          <span class="w-2 h-2 rounded-full bg-pitch-green"></span>
+                          <span class="text-snow-mute">Normal</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                          <span class="w-2 h-2 rounded-full bg-warning-amber"></span>
+                          <span class="text-snow-mute">Caution</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                          <span class="w-2 h-2 rounded-full bg-warning-red"></span>
+                          <span class="text-snow-mute">Bottleneck</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex-1 w-full h-full min-h-[180px] relative">
+                      <svg viewBox="0 0 600 400" class="w-full h-full select-none" aria-label="Stadium interactive density grid map">
+                        <defs>
+                          <filter id="glow-green-filter" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="6" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                          </filter>
+                        </defs>
+
+                        <!-- Outer Boundary -->
+                        <ellipse cx="300" cy="200" rx="280" ry="180" fill="none" stroke="#22332c" stroke-width="4" stroke-dasharray="8,6" />
+
+                        <!-- Zone Paths -->
+                        <path id="svg-zone-A" d="M 120 100 A 240 140 0 0 1 480 100 L 400 160 A 130 70 0 0 0 200 160 Z" fill="rgba(0, 230, 118, 0.15)" stroke="#00e676" stroke-width="2" class="cursor-pointer transition-all duration-300 hover:brightness-125 focus:outline-none" tabindex="0" role="button" aria-label="Zone A (North Stand) density: 55%. Status: Normal." aria-pressed="false" />
+                        <path id="svg-zone-B" d="M 480 100 A 240 140 0 0 1 480 300 L 400 240 A 130 70 0 0 0 400 160 Z" fill="rgba(255, 61, 0, 0.15)" stroke="#ff3d00" stroke-width="2" class="cursor-pointer transition-all duration-300 hover:brightness-125 focus:outline-none" tabindex="0" role="button" aria-label="Zone B (East Stand) density: 88%. Status: Bottleneck." aria-pressed="true" />
+                        <path id="svg-zone-C" d="M 480 300 A 240 140 0 0 1 120 300 L 200 240 A 130 70 0 0 0 400 240 Z" fill="rgba(255, 171, 0, 0.15)" stroke="#ffab00" stroke-width="2" class="cursor-pointer transition-all duration-300 hover:brightness-125 focus:outline-none" tabindex="0" role="button" aria-label="Zone C (South Stand) density: 82%. Status: Caution." aria-pressed="false" />
+                        <path id="svg-zone-D" d="M 120 300 A 240 140 0 0 1 120 100 L 200 160 A 130 70 0 0 0 200 240 Z" fill="rgba(0, 230, 118, 0.15)" stroke="#00e676" stroke-width="2" class="cursor-pointer transition-all duration-300 hover:brightness-125 focus:outline-none" tabindex="0" role="button" aria-label="Zone D (West Stand) density: 42%. Status: Normal." aria-pressed="false" />
+
+                        <!-- Center Pitch -->
+                        <g class="opacity-80">
+                          <rect x="220" y="150" width="160" height="100" fill="#0f3d23" stroke="#22332c" stroke-width="2" />
+                          <rect x="225" y="155" width="150" height="90" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+                          <line x1="300" y1="155" x2="300" y2="245" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+                          <circle cx="300" cy="200" r="22" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+                        </g>
+
+                        <!-- Labels inside map -->
+                        <g transform="translate(300, 75)" class="pointer-events-none">
+                          <rect x="-45" y="-12" width="90" height="20" rx="3" fill="#000" fill-opacity="0.8" stroke="#22332c" stroke-width="1" />
+                          <text id="map-label-A" text-anchor="middle" y="2" fill="#fff" font-size="10" font-weight="bold">ZONE A: 55%</text>
+                        </g>
+                        <g transform="translate(485, 200)" class="pointer-events-none">
+                          <rect x="-45" y="-12" width="90" height="20" rx="3" fill="#000" fill-opacity="0.8" stroke="#22332c" stroke-width="1" />
+                          <text id="map-label-B" text-anchor="middle" y="2" fill="#fff" font-size="10" font-weight="bold">ZONE B: 88%</text>
+                        </g>
+                        <g transform="translate(300, 325)" class="pointer-events-none">
+                          <rect x="-45" y="-12" width="90" height="20" rx="3" fill="#000" fill-opacity="0.8" stroke="#22332c" stroke-width="1" />
+                          <text id="map-label-C" text-anchor="middle" y="2" fill="#fff" font-size="10" font-weight="bold">ZONE C: 82%</text>
+                        </g>
+                        <g transform="translate(115, 200)" class="pointer-events-none">
+                          <rect x="-45" y="-12" width="90" height="20" rx="3" fill="#000" fill-opacity="0.8" stroke="#22332c" stroke-width="1" />
+                          <text id="map-label-D" text-anchor="middle" y="2" fill="#fff" font-size="10" font-weight="bold">ZONE D: 42%</text>
+                        </g>
+
+                        <!-- Gate Circles -->
+                        <circle id="map-gate-A" cx="300" cy="18" r="7" fill="#00e676" stroke="#fff" stroke-width="1.5" />
+                        <text x="300" y="30" fill="#a0aab2" font-size="8" font-weight="bold" text-anchor="middle">G1</text>
+                        
+                        <circle id="map-gate-B" cx="582" cy="200" r="7" fill="#00e676" stroke="#fff" stroke-width="1.5" />
+                        <text x="582" y="213" fill="#a0aab2" font-size="8" font-weight="bold" text-anchor="middle">G2</text>
+                        
+                        <circle id="map-gate-C" cx="300" cy="382" r="7" fill="#00e676" stroke="#fff" stroke-width="1.5" />
+                        <text x="300" y="375" fill="#a0aab2" font-size="8" font-weight="bold" text-anchor="middle">G3</text>
+
+                        <circle id="map-gate-D" cx="18" cy="200" r="7" fill="#00e676" stroke="#fff" stroke-width="1.5" />
+                        <text x="18" y="213" fill="#a0aab2" font-size="8" font-weight="bold" text-anchor="middle">G4</text>
+                      </svg>
+                    </div>
+
+                    <div class="w-full flex justify-between items-center text-[10px] border-t border-pitch-border/50 pt-2 text-snow-mute">
+                      <span>Active Selection: <strong id="selected-zone-badge" class="text-white">Zone B</strong></span>
+                      <div class="flex gap-2">
+                        <span id="selected-zone-capacity">Cap: 22,000</span>
+                        <span id="selected-zone-population">Pop: 19,360</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sector details side column -->
+                <div class="glass-panel p-4 rounded-2xl border border-pitch-border/80 space-y-4">
+                  <div>
+                    <h4 id="detail-zone-name" class="text-white font-extrabold text-xs uppercase tracking-wider">East Stand Detail</h4>
+                    <p class="text-[10px] text-snow-mute">Live Stand Telemetry readouts</p>
+                  </div>
+                  
+                  <div class="space-y-3 text-xs">
+                    <div class="p-2.5 rounded-lg bg-black/40 border border-pitch-border/40 flex justify-between">
+                      <span class="text-snow-mute">Congestion Density</span>
+                      <strong id="detail-zone-density" class="text-warning-red font-mono" aria-live="polite">88%</strong>
+                    </div>
+
+                    <div class="p-2.5 rounded-lg bg-black/40 border border-pitch-border/40 flex justify-between">
+                      <span class="text-snow-mute">Gate Exit Status</span>
+                      <strong id="detail-zone-gate" class="text-pitch-green font-mono" aria-live="polite">Open</strong>
+                    </div>
+
+                    <div class="p-2.5 rounded-lg bg-black/40 border border-pitch-border/40 flex justify-between">
+                      <span class="text-snow-mute">Evacuation Delay</span>
+                      <strong id="detail-zone-delay" class="text-white font-mono" aria-live="polite">24 min</strong>
+                    </div>
+
+                    <div class="p-2.5 rounded-lg bg-black/40 border border-pitch-border/40 flex justify-between">
+                      <span class="text-snow-mute">Food Concession Queue</span>
+                      <strong id="detail-zone-concession" class="text-white font-mono" aria-live="polite">28 min</strong>
+                    </div>
+
+                    <div class="p-2.5 rounded-lg bg-black/40 border border-pitch-border/40 flex justify-between">
+                      <span class="text-snow-mute">Restroom Wait Time</span>
+                      <strong id="detail-zone-restroom" class="text-white font-mono" aria-live="polite">14 min</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SIMULATION & REMEDIATION ACTION DECK -->
+              <div class="glass-panel p-5 rounded-2xl border border-pitch-border/80 flex flex-col gap-6" aria-labelledby="staff-panel-title">
+                
+                <div class="flex justify-between items-center bg-black/40 p-4 rounded-xl border border-pitch-border/50">
+                  <div>
+                    <h3 id="staff-panel-title" class="text-white font-extrabold text-xs uppercase tracking-wider flex items-center gap-2">
+                      <span class="text-warning-amber" aria-hidden="true">🚨</span> Incident Simulation & Action Deck
+                    </h3>
+                    <p class="text-[10px] text-snow-mute mt-0.5">Inject stadium emergencies to stress-test fan navigation telemetry</p>
+                  </div>
+                  
+                  <button
+                    id="btn-reset-sim"
+                    data-testid="reset-button"
+                    aria-label="Reset simulation telemetry to baseline"
+                    class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold border border-warning-orange/30 hover:border-warning-orange/60 text-warning-orange hover:bg-warning-orange/10 rounded-lg transition-all"
+                  >
+                    <span>🔄</span> Reset Sim
+                  </button>
+                </div>
+
+                <!-- Simulation Trigger Buttons -->
+                <div class="space-y-4">
+                  <!-- Group 1: Entry & Security -->
+                  <fieldset class="border border-pitch-border/60 rounded-xl p-4 bg-black/20">
+                    <legend class="text-[10px] font-bold text-pitch-green uppercase px-2 font-mono tracking-wider">
+                      ENTRY & SECURITY
+                    </legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                      <button
+                        id="btn-trig-turnstile"
+                        data-testid="trigger-turnstile"
+                        aria-label="Toggle Turnstile Scanner Outage in Zone A"
+                        class="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-left border border-pitch-border/80 bg-pitch-card hover:bg-pitch-card/80 text-white transition-all focus:outline-none"
+                      >
+                        <span class="truncate">Turnstile Scanner Outage</span>
+                        <span class="text-warning-red shrink-0 ml-2" aria-hidden="true">▶</span>
+                      </button>
+
+                      <button
+                        id="btn-trig-gate-bravo"
+                        data-testid="trigger-gate-bravo"
+                        aria-label="Toggle Gate Bravo Security Surge in Zone B"
+                        class="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-left border border-pitch-border/80 bg-pitch-card hover:bg-pitch-card/80 text-white transition-all focus:outline-none"
+                      >
+                        <span class="truncate">Gate Bravo Security Surge</span>
+                        <span class="text-warning-amber shrink-0 ml-2" aria-hidden="true">▶</span>
+                      </button>
+                    </div>
+                  </fieldset>
+
+                  <!-- Group 2: Concourse & Amenities -->
+                  <fieldset class="border border-pitch-border/60 rounded-xl p-4 bg-black/20">
+                    <legend class="text-[10px] font-bold text-pitch-green uppercase px-2 font-mono tracking-wider">
+                      CONCOURSE & AMENITIES
+                    </legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                      <button
+                        id="btn-trig-food-court"
+                        data-testid="trigger-food-court"
+                        aria-label="Toggle Half-Time Food Court Gridlock in Zone C"
+                        class="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-left border border-pitch-border/80 bg-pitch-card hover:bg-pitch-card/80 text-white transition-all focus:outline-none"
+                      >
+                        <span class="truncate">Half-Time Food Court Gridlock</span>
+                        <span class="text-warning-amber shrink-0 ml-2" aria-hidden="true">▶</span>
+                      </button>
+
+                      <button
+                        id="btn-trig-restroom"
+                        data-testid="trigger-restroom"
+                        aria-label="Toggle Restroom Line Spillover in Zone D"
+                        class="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-left border border-pitch-border/80 bg-pitch-card hover:bg-pitch-card/80 text-white transition-all focus:outline-none"
+                      >
+                        <span class="truncate">Restroom Line Spillover</span>
+                        <span class="text-warning-yellow shrink-0 ml-2" aria-hidden="true">▶</span>
+                      </button>
+                    </div>
+                  </fieldset>
+
+                  <!-- Group 3: Seating Bowl & Egress -->
+                  <fieldset class="border border-pitch-border/60 rounded-xl p-4 bg-black/20">
+                    <legend class="text-[10px] font-bold text-pitch-green uppercase px-2 font-mono tracking-wider">
+                      SEATING BOWL & EGRESS
+                    </legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                      <button
+                        id="btn-trig-escalator"
+                        data-testid="trigger-escalator"
+                        aria-label="Toggle Upper Deck Escalator Failure in Zone B"
+                        class="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-left border border-pitch-border/80 bg-pitch-card hover:bg-pitch-card/80 text-white transition-all focus:outline-none"
+                      >
+                        <span class="truncate">Upper Deck Escalator Failure</span>
+                        <span class="text-warning-red shrink-0 ml-2" aria-hidden="true">▶</span>
+                      </button>
+
+                      <button
+                        id="btn-trig-egress"
+                        data-testid="trigger-egress"
+                        aria-label="Toggle Stairwell Egress Blockage in Zone C"
+                        class="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-left border border-pitch-border/80 bg-pitch-card hover:bg-pitch-card/80 text-white transition-all focus:outline-none"
+                      >
+                        <span class="truncate">Stairwell Egress Blockage</span>
+                        <span class="text-warning-red shrink-0 ml-2" aria-hidden="true">▶</span>
+                      </button>
+                    </div>
+                  </fieldset>
+
+                  <!-- Group 4: Perimeter & Transit -->
+                  <fieldset class="border border-pitch-border/60 rounded-xl p-4 bg-black/20">
+                    <legend class="text-[10px] font-bold text-pitch-green uppercase px-2 font-mono tracking-wider">
+                      PERIMETER & TRANSIT
+                    </legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                      <button
+                        id="btn-trig-subway"
+                        data-testid="trigger-subway"
+                        aria-label="Toggle Subway Platform Saturation in Zone D"
+                        class="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-left border border-pitch-border/80 bg-pitch-card hover:bg-pitch-card/80 text-white transition-all focus:outline-none"
+                      >
+                        <span class="truncate">Subway Platform Saturation</span>
+                        <span class="text-warning-red shrink-0 ml-2" aria-hidden="true">▶</span>
+                      </button>
+
+                      <button
+                        id="btn-trig-rideshare"
+                        data-testid="trigger-rideshare"
+                        aria-label="Toggle Rideshare Lot Traffic Gridlock in Zone A"
+                        class="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-left border border-pitch-border/80 bg-pitch-card hover:bg-pitch-card/80 text-white transition-all focus:outline-none"
+                      >
+                        <span class="truncate">Rideshare Lot Gridlock</span>
+                        <span class="text-warning-amber shrink-0 ml-2" aria-hidden="true">▶</span>
+                      </button>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <!-- Active Incident Logs Display -->
+                <div id="sim-logs-wrapper" class="bg-black/60 border border-pitch-border rounded-xl p-5 space-y-4 hidden">
+                  <h4 class="text-white font-extrabold text-xs uppercase tracking-wider flex items-center gap-2 border-b border-pitch-border/50 pb-2">
+                    <span class="text-warning-red animate-pulse" aria-hidden="true">⚠️</span>
+                    Active Incident Telemetry Logs (<span id="sim-logs-count">0</span>)
+                  </h4>
+                  
+                  <div id="sim-logs-list" class="grid grid-cols-1 gap-3 max-h-[220px] overflow-y-auto pr-1" aria-live="polite" aria-relevant="additions">
+                    <!-- Dynamic logs get injected here -->
+                  </div>
+                </div>
+
+                <!-- Tactical Mitigation Action Deck Buttons -->
+                <div class="bg-black/30 border border-pitch-border/50 rounded-xl p-4">
+                  <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-3">
+                    Tactical Remediation Plan
+                  </h4>
+                  
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <button
+                      id="btn-act-annex"
+                      aria-label="Toggle Gate 1 Annex Turnstiles status"
+                      aria-pressed="false"
+                      class="flex items-center justify-between p-3 rounded-lg border text-xs font-bold text-left transition-all bg-pitch-card hover:bg-pitch-card/85 border-pitch-border/80 text-snow-mute focus:outline-none"
+                    >
+                      <span class="flex items-center gap-2">
+                        <span aria-hidden="true">🎛️</span> Gate 1 Annex Turnstiles
+                      </span>
+                      <span id="indicator-annex" class="w-1.5 h-1.5 rounded-full bg-snow-dark"></span>
+                    </button>
+
+                    <button
+                      id="btn-act-shuttles"
+                      aria-label="Toggle Zone B Express Shuttles status"
+                      aria-pressed="false"
+                      class="flex items-center justify-between p-3 rounded-lg border text-xs font-bold text-left transition-all bg-pitch-card hover:bg-pitch-card/85 border-pitch-border/80 text-snow-mute focus:outline-none"
+                    >
+                      <span class="flex items-center gap-2">
+                        <span aria-hidden="true">🚌</span> Zone B Express Shuttles
+                      </span>
+                      <span id="indicator-shuttles" class="w-1.5 h-1.5 rounded-full bg-snow-dark"></span>
+                    </button>
+
+                    <button
+                      id="btn-act-spillover"
+                      aria-label="Toggle Gate 3 Spillover Lane status"
+                      aria-pressed="false"
+                      class="flex items-center justify-between p-3 rounded-lg border text-xs font-bold text-left transition-all bg-pitch-card hover:bg-pitch-card/85 border-pitch-border/80 text-snow-mute focus:outline-none"
+                    >
+                      <span class="flex items-center gap-2">
+                        <span aria-hidden="true">⚡</span> Gate 3 Spillover Lane
+                      </span>
+                      <span id="indicator-spillover" class="w-1.5 h-1.5 rounded-full bg-snow-dark"></span>
+                    </button>
+
+                    <button
+                      id="btn-act-reroute"
+                      aria-label="Toggle Express Metro Reroute status"
+                      aria-pressed="false"
+                      class="flex items-center justify-between p-3 rounded-lg border text-xs font-bold text-left transition-all bg-pitch-card hover:bg-pitch-card/85 border-pitch-border/80 text-snow-mute focus:outline-none"
+                    >
+                      <span class="flex items-center gap-2">
+                        <span aria-hidden="true">🚇</span> Express Metro Reroute
+                      </span>
+                      <span id="indicator-reroute" class="w-1.5 h-1.5 rounded-full bg-snow-dark"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- VIEW B: TOURNAMENT VIEWER PANEL -->
+            <div id="spectator-panel" role="tabpanel" aria-labelledby="tab-spectator" class="space-y-6 hidden">
+              
+              <!-- Public safety broadcast banner -->
+              <div class="glass-panel p-5 rounded-3xl border border-pitch-border/80 relative overflow-hidden flex items-start gap-3" role="region" aria-label="Live Safety Broadcast Banner">
+                <span class="text-warning-amber shrink-0 mt-0.5 text-xl" aria-hidden="true">⚠️</span>
+                <div class="w-full">
+                  <h4 class="text-xs font-bold text-white uppercase tracking-wider">Live Tournament Safety Alerts</h4>
+                  <p id="spec-broadcast-alert" class="text-xs text-snow-mute mt-1 leading-relaxed" aria-live="polite">
+                    Stadium channels normal. Open entrance turnstiles report standard checkout flow. Follow green arrows to your exit gates.
+                  </p>
+                  <button
+                    id="btn-spec-clear-alerts"
+                    class="mt-3 text-[10px] font-bold text-warning-amber underline hover:text-white hidden focus:outline-none"
+                  >
+                    Clear All Active Alerts
+                  </button>
+                </div>
+              </div>
+
+              <!-- Spectator HUD zone selector details grid -->
+              <div class="glass-panel p-6 rounded-2xl border border-pitch-border/80 space-y-4">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h3 class="text-white font-extrabold text-sm uppercase tracking-wide">Stadium Spectator Guide</h3>
+                    <p class="text-[10px] text-snow-mute">Check stands and concession queues for smooth egress</p>
+                  </div>
+                  
+                  <select id="select-spec-zone" class="bg-pitch-card border border-pitch-border text-white text-xs rounded-lg p-2 focus:outline-none" aria-label="Select Stand to view">
+                    <option value="A">Zone A: North Stand</option>
+                    <option value="B" selected>Zone B: East Stand</option>
+                    <option value="C">Zone C: South Stand</option>
+                    <option value="D">Zone D: West Stand</option>
+                  </select>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <!-- Stand status card -->
+                  <div class="bg-black/40 border border-pitch-border/60 rounded-xl p-4 space-y-2">
+                    <h4 class="text-xs font-bold text-snow-mute uppercase">Stand Safety Index</h4>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span id="spec-hud-density-dot" class="w-3 h-3 rounded-full bg-warning-red"></span>
+                      <span id="spec-hud-density-text" class="text-sm font-bold text-white" aria-live="polite">88% Density</span>
+                    </div>
+                    <p class="text-[10px] text-snow-dark">High capacity crowds — consider alternative gates</p>
+                  </div>
+
+                  <!-- Queue card -->
+                  <div class="bg-black/40 border border-pitch-border/60 rounded-xl p-4 space-y-2">
+                    <h4 class="text-xs font-bold text-snow-mute uppercase">Estimated Concession Waiting Times</h4>
+                    <div class="flex items-baseline gap-1 mt-1">
+                      <span id="spec-hud-concession" class="text-lg font-black text-white" aria-live="polite">28 min</span>
+                      <span class="text-[9px] text-snow-dark">average pos queue</span>
+                    </div>
+                  </div>
+
+                  <!-- Gate card -->
+                  <div class="bg-black/40 border border-pitch-border/60 rounded-xl p-4 space-y-2">
+                    <h4 class="text-xs font-bold text-snow-mute uppercase">Gate Checkpoints Status</h4>
+                    <div class="flex items-center gap-2 mt-1">
+                      <span id="spec-hud-gate-dot" class="w-2.5 h-2.5 rounded-full bg-pitch-green"></span>
+                      <span id="spec-hud-gate-text" class="text-sm font-bold text-white" aria-live="polite">Gate 2 Open</span>
+                    </div>
+                  </div>
+
+                  <!-- Restroom card -->
+                  <div class="bg-black/40 border border-pitch-border/60 rounded-xl p-4 space-y-2">
+                    <h4 class="text-xs font-bold text-snow-mute uppercase">Restroom Queue Delay</h4>
+                    <div class="flex items-baseline gap-1 mt-1">
+                      <span id="spec-hud-restroom" class="text-lg font-black text-white" aria-live="polite">14 min</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN (AI Copilot Chat Panel) -->
+          <div class="lg:col-span-1">
+            <div class="glass-panel p-5 rounded-2xl border border-pitch-border/80 flex flex-col h-[560px] md:h-[620px] relative overflow-hidden">
+              
+              <!-- Chat header -->
+              <div class="flex justify-between items-start border-b border-pitch-border pb-3">
+                <div>
+                  <h3 class="text-white font-extrabold text-xs uppercase tracking-wider flex items-center gap-2">
+                    <span class="text-pitch-green" aria-hidden="true">💬</span> Gemini AI Operations Copilot
+                  </h3>
+                  <p class="text-[10px] text-snow-mute">Real-time incident mitigations & translations</p>
+                </div>
+                
+                <button
+                  id="btn-toggle-key-input"
+                  aria-label="Configure Gemini API credentials"
+                  class="text-[10px] text-snow-mute hover:text-white underline focus:outline-none"
+                >
+                  Configure API Key
+                </button>
+              </div>
+
+              <!-- Gemini API Key entry modal layer inside panel -->
+              <div id="key-input-wrapper" class="absolute inset-x-0 top-14 bg-pitch-panel/95 border-b border-pitch-border p-4 z-20 hidden">
+                <form id="key-input-form" class="space-y-3">
+                  <label for="input-gemini-key" class="block text-[10px] uppercase font-bold text-snow-mute">
+                    Gemini API Key Credential
+                  </label>
+                  <input
+                    type="password"
+                    id="input-gemini-key"
+                    placeholder="AIzaSy..."
+                    class="w-full text-xs p-2 rounded-lg bg-black border border-pitch-border text-white placeholder-snow-dark focus:outline-none"
+                  />
+                  <div class="flex justify-end gap-2 text-[10px]">
+                    <button
+                      type="button"
+                      id="btn-cancel-key"
+                      class="px-2.5 py-1.5 border border-pitch-border text-snow-mute rounded-md"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      class="px-2.5 py-1.5 bg-pitch-green text-black font-bold rounded-md"
+                    >
+                      Save Key
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Message History Logs container -->
+              <div id="chat-messages-container" class="flex-1 overflow-y-auto space-y-4 py-4 pr-1 text-xs" aria-live="polite" aria-relevant="additions text">
+                <!-- Welcome greeting gets injected here -->
+              </div>
+
+              <!-- Input form & suggestion pills bottom container -->
+              <div class="border-t border-pitch-border pt-3 space-y-3">
+                <!-- Suggestion Bubbles -->
+                <div class="flex gap-2 overflow-x-auto pb-1.5 no-scrollbar scroll-smooth">
+                  <button
+                    class="chat-bubble-suggestion shrink-0 text-[10px] font-bold px-2.5 py-1.5 rounded-full border border-pitch-border bg-pitch-card hover:bg-pitch-border/50 text-white focus:outline-none"
+                    aria-label="Suggest query: How to reduce Zone B congestion"
+                  >
+                    Suggest Zone B route plan
+                  </button>
+                  <button
+                    class="chat-bubble-suggestion shrink-0 text-[10px] font-bold px-2.5 py-1.5 rounded-full border border-pitch-border bg-pitch-card hover:bg-pitch-border/50 text-white focus:outline-none"
+                    aria-label="Suggest query: Evacuation timeline metrics"
+                  >
+                    Check Gate 1 scan delays
+                  </button>
+                </div>
+
+                <!-- Input form -->
+                <form id="chat-input-form" class="flex gap-2">
+                  <input
+                    type="text"
+                    id="chat-user-message-input"
+                    aria-label="Query Copilot for tactical stadium advice"
+                    placeholder="Ask Copilot about operations or translations..."
+                    class="flex-1 bg-black border border-pitch-border rounded-lg p-2.5 text-xs text-white placeholder-snow-dark focus:outline-none"
+                  />
+                  <button
+                    type="submit"
+                    aria-label="Send message to Copilot"
+                    class="px-4 py-2.5 bg-pitch-green text-black font-extrabold text-xs rounded-lg hover:bg-pitch-greenDark transition-colors focus:outline-none"
+                  >
+                    Send
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- GLOBAL FOOTER -->
+      <footer class="border-t border-pitch-border bg-black py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-[10px] text-snow-dark space-y-1">
+          <p>© 2026 FIFA World Cup Stadium Management Operations Dashboard.</p>
+          <p>This layout operates under high contrast standards & WCAG 2.1 AA keyboard alignment policies.</p>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Inject main controller app.js entry point -->
+    <script type="module" src="/app.js"></script>
+
+  </body>
+</html>

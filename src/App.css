@@ -1,0 +1,45 @@
+/* Keyframe glow-pulse animations for stadium operations */
+@keyframes pulse-green {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.2);
+    border-color: rgba(0, 230, 118, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 230, 118, 0.5);
+    border-color: rgba(0, 230, 118, 0.8);
+  }
+}
+
+@keyframes pulse-amber {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 171, 0, 0.2);
+    border-color: rgba(255, 171, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 171, 0, 0.5);
+    border-color: rgba(255, 171, 0, 0.8);
+  }
+}
+
+@keyframes pulse-red {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 61, 0, 0.2);
+    border-color: rgba(255, 61, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 61, 0, 0.5);
+    border-color: rgba(255, 61, 0, 0.8);
+  }
+}
+
+.glow-pulse-green {
+  animation: pulse-green 2.5s infinite;
+}
+
+.glow-pulse-amber {
+  animation: pulse-amber 2.5s infinite;
+}
+
+.glow-pulse-red {
+  animation: pulse-red 2.5s infinite;
+}

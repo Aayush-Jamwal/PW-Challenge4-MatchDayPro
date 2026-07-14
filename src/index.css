@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-pitch-black text-snow font-sans antialiased overflow-x-hidden selection:bg-pitch-green selection:text-pitch-black;
+  }
+  
+  /* Modern scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-pitch-dark;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-pitch-border rounded-full hover:bg-pitch-green transition-colors;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    background: rgba(16, 23, 20, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(34, 51, 44, 0.7);
+  }
+  
+  .glass-card {
+    background: rgba(22, 34, 29, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(34, 51, 44, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .glass-card:hover {
+    border-color: rgba(0, 230, 118, 0.4);
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.1);
+  }
+}
+
+/* Custom focus outline ring for keyboard navigation (WCAG 2.1 AA) */
+*:focus-visible {
+  outline: 2px solid #00e676 !important;
+  outline-offset: 2px !important;
+}
+
+/* Remove default blue outline ring on Chrome */
+*:focus {
+  outline: none;
+}
