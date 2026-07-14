@@ -70,6 +70,27 @@ It executes **62 automated unit tests** verifying:
 
 ---
 
+## 🔑 Setting Up the Gemini API Key
+
+The MatchDay Pro AI Copilot utilizes a multi-tier routing architecture. To enable direct client-side requests to Google's Gemini API:
+
+1. **Obtain an API Key**:
+   Create or retrieve a Gemini API key from the [Google AI Studio](https://aistudio.google.com/).
+
+2. **Configure the Key in the Portal**:
+   - Access the dashboard at `http://localhost:5173/` and switch to the **Operational Command Staff** view.
+   - Locate the **Chat Copilot** card in the right-hand sidebar.
+   - Click on the **Settings (Gear/Key) icon** in the Chat Copilot header.
+   - Enter your API key in the input field and click **Save Key**.
+
+3. **How It Works**:
+   - **Local Storage Sync**: The key is stored locally in the browser under the key `matchday_gemini_key`. It is never uploaded to any intermediary server or shared across sessions.
+   - **Multi-Tier Prompt Orchestration**:
+     Once saved, client queries bypass the offline rule engine and are directed straight to Google's Generative Language API endpoint (`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash`).
+     The app dynamically builds a system prompt containing the live state of all 4 stadium stands (North, East, South, West), their current density percentages, active alerts, and toggled mitigation plans.
+
+---
+
 ## 🚀 Setup & Execution
 
 ### Installation
