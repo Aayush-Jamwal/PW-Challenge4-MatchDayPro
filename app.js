@@ -839,7 +839,7 @@ Provide a highly tactical, localized recommendation (maximum 3 sentences) in the
   // Tier 2: Fallback to direct client key call
   if (state.geminiKey && state.geminiKey.trim()) {
     const key = state.geminiKey.trim();
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${key}`;
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
